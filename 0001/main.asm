@@ -6,26 +6,21 @@ section .text
 main:
 push rsp
     mov rax, 0
-    mov rbx, 3
-    .add3:
-        add rax, rbx
-        add rbx, 3
-        cmp rbx, 1000
-    jl .add3
-    
-    mov rbx, 5
-    .add5:
-        add rax, rbx
-        add rbx, 5
-        cmp rbx, 1000
-    jl .add5
 
-    mov rbx, 15
-    .sub15:
-        sub rax, rbx
-        add rbx, 15
+    %macro fn 2
+    mov rbx, %2
+    %%bar:
+        %1 rax, rbx
+        add rbx, %2
         cmp rbx, 1000
-    jl .sub15
+    jl %%bar
+    %endmacro
+
+    fn add, 3
+    fn add, 5
+    fn sub, 15
+
+    %unmacro fn 2
 
     mov rdi, fmt
     mov rsi, rax
